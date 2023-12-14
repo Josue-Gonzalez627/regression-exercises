@@ -8,6 +8,59 @@ plt.style.use(
     "https://github.com/dhaitz/matplotlib-stylesheets/raw/master/pitayasmoothie-dark.mplstyle"
 )
 
+#####
+def plot_variable_pairs(df):
+    """
+    - Accepts a dataframe as input
+    - Returns a plot and regression line for each pairwise relationship.
+
+    """
+    # Set the style of the plot
+    sns.set(style="ticks")
+
+    # Plot the pairwise relationships with regression line
+    sns.pairplot(df, kind="reg")
+    
+    
+def plot_categorical_and_continuous_vars(df, cat_vars, cont_vars):
+    """
+    - Accepts a df, categorical and continuous variable as input
+    - returns 3 different plots for visualizing a categorical variable and a continuous variable.
+    """
+
+    for cat_var in cat_vars:
+        for cont_var in cont_vars:
+            # Plot a boxenplot of the continuous variable for each categorical variable
+            plt.figure(figsize=(8, 6))
+            sns.boxenplot(x=cat_var, y=cont_var, data=df)
+            plt.title(f"{cont_var} by {cat_var}")
+            plt.show()
+
+            
+            # Plot a histogram of the continuous variable for each categorical variable
+            plt.figure(figsize=(8, 6))
+            
+            #This loop iterates over each unique value in the categorical variable, 'cat_var'
+            #For each unique category (cat), a separate histogram will be plotted.
+            for cat in df[cat_var].unique():
+                
+                #Inside the loop, this line plots a histogram for the continuous variable, 'cont_var' f
+                #or each category of the categorical variable, 'cat_var'.
+                sns.histplot(
+                    df[df[cat_var] == cat][cont_var], label=cat, alpha=0.5, kde=True
+                )
+            plt.title(f"{cont_var} by {cat_var}")
+            plt.legend()
+            plt.show()
+
+            
+            # Plot a swarmplot of the continuous variable for each categorical variable
+            plt.figure(figsize=(8, 6))
+            sns.catplot(data=df, x=cat_var, y=cont_var, kind='swarm') #swarm is mentioned to be "slow and resource-intensive" so use sample!
+            plt.title(f"{cont_var} by {cat_var}")
+            plt.show()
+#####            
+            
 def explore_univariate(train, cat_vars, quant_vars):
     for var in cat_vars:
         explore_univariate_categorical(train, var)

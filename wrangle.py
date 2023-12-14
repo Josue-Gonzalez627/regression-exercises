@@ -178,6 +178,7 @@ def get_zillow_sample_data():
     If not, it'll make the MYSQL connection and use the query below to 
     read it in the datafram.
     It'll also write/create the csv for next time.
+    Limit is so low due to the processing time during exploration
     '''
     filename = 'zillow_sample.csv'
     
@@ -198,7 +199,7 @@ def get_zillow_sample_data():
         yearbuilt
         FROM properties_2017
         WHERE propertylandusetypeid = '261'
-        LIMIT 10000
+        LIMIT 1800
         '''
     # Read the SQL query into a df
     df_sample = pd.read_sql(sql_query, url)
